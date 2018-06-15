@@ -266,7 +266,8 @@ void	Hero::_shoot()
 	Bullet		*newBullet;
 
 	newNode = new t_bullet;
-	newBullet = new Bullet(this->_current_window, this->_xHero, this->_yHero, this->_xMax, this->_yMax);
+	newBullet = new Bullet(this->_current_window, this->_xHero, this->_yHero,
+													this->_xMax, this->_yMax);
 	newNode->newOne = newBullet;
 	newNode->next = nullptr;
 	tmp = this->_magazine;
@@ -300,14 +301,67 @@ void	Hero::_showHeroPosition() const
 	return ;
 }
 
+Hero::t_bullet	*Hero::_copyBullets(t_bullet *orig)
+{
+	t_bullet 	*newMagazine;
+	t_bullet	*tmp;
+
+	newMagazine = nullptr;
+	while (orig != nullptr)
+	{
+		t_bullet *newNode = new t_bullet;
+		Bullet	*newOne = new Bullet;
+		newNode->newOne = newOne;
+		newNode->next = nullptr;
+		tmp = newMagazine;
+		if (newMagazine == nullptr)
+			newMagazine = newNode;
+		else
+		{
+			while (tmp->next != nullptr)
+				tmp = tmp->next;
+			tmp->next = newNode;
+		}
+		orig = orig->next;
+	}
+	return (newMagazine);
+}
+
+Hero::t_enemy	*Hero::_copyEnemies(t_enemy *orig)
+{
+	t_enemy *newEnemies;
+	t_enemy	*tmp;
+
+	newEnemies = nullptr;
+	while (orig != nullptr)
+	{
+		t_enemy *newNode = new t_enemy;
+		Enemy	*newOne = new Enemy;
+		newNode->newOne = newOne;
+		newNode->next = nullptr;
+		tmp = newEnemies;
+		if (newEnemies == nullptr)
+			newEnemies = newNode;
+		else
+		{
+			while (tmp->next != nullptr)
+				tmp = tmp->next;
+			tmp->next = newNode;
+		}
+		orig = orig->next;
+	}
+	return (newEnemies);
+}
+
 Hero &Hero::operator= (const Hero &other)
 {
+	this->_enemies = _copyEnemies(other._enemies);
+	this->_magazine = _copyBullets(other._magazine);
 	this->_current_window = other._current_window;
 	this->_yHero = other._yHero ;
 	this->_xHero = other._xHero;
 	this->_hero = other._hero;
 	this->_yMax = other._yMax;
 	this->_xMax = other._xMax;
-	//DON'T FORGET TO COPY LIST OF BULLETS AND LIST OF ENEMIES !!
 	return (*this);
 }

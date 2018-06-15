@@ -78,6 +78,8 @@ class Hero
 		void		_freeEnemyList();
 		bool		_heroAlive() const;
 		void		_showScore() const;
+		t_bullet	*_copyBullets(t_bullet *orig);
+		t_enemy		*_copyEnemies(t_enemy *orig);
 };
 
 #endif
