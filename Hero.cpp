@@ -23,6 +23,7 @@ Hero::Hero(WINDOW *window, int y, int x, char c)
 	this->_yHero = y;
 	this->_xHero = x;
 	this->_hero = c;
+	this->_score = 0;
 	this->_magazine = nullptr;
 	this->_enemies = nullptr;
 	getmaxyx(window, this->_yMax, this->_xMax);
@@ -115,6 +116,7 @@ void	Hero::_controlTheShip()
 		this->_moveAllBullets();
 		this->_moveAllEnemies();
 		this->_checkHitting();
+		this->_showScore();
 		wrefresh(this->_current_window);
 		usleep(GAME_SPEED);
 	}
@@ -123,7 +125,14 @@ void	Hero::_controlTheShip()
 	return ;
 }
 
-void		Hero::_checkHitting()
+void	Hero::_showScore() const
+{
+	mvwaddstr(this->_current_window, 0, 1, "SCORE: ");
+	mvwprintw(this->_current_window, 0, strlen("SCORE: ") + 1, "%d", this->_score);
+	return ;
+}	
+
+void	Hero::_checkHitting()
 {
 	t_bullet	*tmpBullet;
 	t_enemy		*tmpEnemy;
@@ -134,10 +143,11 @@ void		Hero::_checkHitting()
 		tmpBullet = this->_magazine;
 		while (tmpBullet != nullptr)
 		{
-			if (abs(tmpEnemy->newOne->getX() - tmpBullet->newOne->getX()) < 1 &&
+			if (abs(tmpEnemy->newOne->getX() - tmpBullet->newOne->getX()) < 2 &&
 				tmpEnemy->newOne->getY() == tmpBullet->newOne->getY() &&
 				tmpBullet->newOne->isInFly() == TRUE)
 			{
+				this->_score += 100;
 				tmpEnemy->newOne->setAsDead();
 				tmpBullet->newOne->hitSomeone();
 			}
@@ -146,6 +156,11 @@ void		Hero::_checkHitting()
 		tmpEnemy = tmpEnemy->next;
 	}
 	return ;
+}
+
+const int	&Hero::getScore() const
+{
+	return (this->_score);
 }
 
 bool	Hero::_heroAlive() const

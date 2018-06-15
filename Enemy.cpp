@@ -81,7 +81,7 @@ void		Enemy::fly(void)
 
 int			Enemy::_getRandomCoord(void)
 {
-	return (rand() % LINES - 1);
+	return (rand() % LINES - 2);
 }
 
 Enemy &Enemy::operator= (const Enemy &other)

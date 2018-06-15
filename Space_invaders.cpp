@@ -32,9 +32,12 @@ void	Space_invaders::startGame()
 {
 	this->_startNcursesMode();
 	
-	this->_ship = new Hero(this->_game_field, 15, 20, '}');
+	this->_ship = new Hero(this->_game_field, 11, 20, '}');
 
 	this->_endNcursesMode();
+	std::cout << std::endl << "   -GAME OVER-" << std::endl;
+	std::cout << "Your Score is: "<< this->_ship->getScore() << std::endl << std::endl;
+	delete this->_ship;
 }
 
 void	Space_invaders::_startNcursesMode()
@@ -58,7 +61,7 @@ void	Space_invaders::_endNcursesMode() const
 
 void	Space_invaders::_makeBox()
 {
-	this->_game_field = newwin(LINES, COLS, 0, 0);
+	this->_game_field = newwin(LINES - 1, COLS, 1, 0);
 	refresh();
 	box(this->_game_field, 0, 0);
 	wrefresh(this->_game_field);
@@ -71,9 +74,9 @@ Space_invaders &Space_invaders::operator= (const Space_invaders &other)
 	this->_shipForm = other._shipForm;
 	this->_yStart = other._yStart;
 	this->_xStart = other._xStart;
-	// if (this->_ship != nullptr)
-	// 	delete this->_ship;
-	// this->_ship = other._ship;
+	if (this->_ship != nullptr)
+		delete this->_ship;
+	this->_ship = other._ship;
 	this->_game_field = other._game_field;
 	return (*this);
 }

@@ -14,8 +14,9 @@
 # define HERO_HPP
 # define SPACE			32
 # define ESC			27
-# define GAME_SPEED		15000
-# define ENEMY_COUNT	10
+# define GAME_SPEED		13000
+# define ENEMY_COUNT	200
+# define BULLET_NUM		10
 
 # include <iostream>
 # include <string>
@@ -23,6 +24,7 @@
 # include <ctime>
 # include <cstdlib>
 # include <unistd.h>
+# include <cstdlib>
 # include "Bullet.hpp"
 # include "Enemy.hpp"
 
@@ -48,9 +50,12 @@ class Hero
 
 		Hero &operator= (const Hero &other);
 
+		const int	&getScore() const;
+
 	private:
 		int			_yHero, _xHero;
 		int			_yMax, _xMax;
+		int			_score;
 		char		_hero;
 		t_bullet	*_magazine;
 		t_enemy		*_enemies;
@@ -72,6 +77,7 @@ class Hero
 		void		_checkHitting();
 		void		_freeEnemyList();
 		bool		_heroAlive() const;
+		void		_showScore() const;
 };
 
 #endif
